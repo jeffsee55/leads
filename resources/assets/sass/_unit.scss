@@ -1,0 +1,109 @@
+.vacation_rental-template-default {
+    #carousel-header {
+        .carousel-inner {
+            height: auto;
+
+            .item {
+                img {
+                    max-width: 100%;
+                    width: auto;
+                }
+            }
+        }
+    }
+}
+
+.quote {
+    margin-bottom: 1rem;
+}
+
+.unit-hero {
+    margin-bottom: 2rem;
+}
+
+.unit-header.box {
+    padding-bottom: 1rem;
+}
+.unit-header.box .entry-title {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.image-container {
+    position: relative;
+}
+
+.unit-card-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.unit-card-details {
+
+    h4, h5 {
+        text-align: center;
+    }
+
+    a.btn {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.unit-card-details h4 {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.unit-card-details h5 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.size-summary {
+    padding: 0 0 1rem;
+
+    &:first-child {
+        border-left: 3px solid #efefef
+    }
+    h2 {
+        margin-top: 0.6rem;
+    }
+    h3 {
+        margin: 0;
+    }
+}
+
+.unit-card {
+    margin-bottom: 1rem;
+}
+
+.image-link {
+    display: block;
+}
+
+.image-container span.unit-rate {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: rgba( 0, 0, 0, 0.5);
+    color: #fff;
+    padding: 0.5rem 1rem;
+}
+
+.panel.review {
+    border-radius: 0;
+}
+
+.amenities-list {
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-bottom: 0.5rem;
+
+    li {
+        list-style: none;
+    }
+}

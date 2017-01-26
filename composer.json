@@ -1,0 +1,33 @@
+{
+    "name": "q4dev/q4vrplugin",
+    "type": "wordpress-plugin",
+    "description": "Wordpress Plugin Boilerplate",
+    "version": "1.0.0",
+    "license": "GNU GPL",
+    "authors": [
+        {
+            "name": "Jeff See",
+            "email": "jeffsee.55@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "windwalker/renderer": "2.*",
+        "illuminate/view": "4.*",
+        "composer/installers": "^1.0",
+        "monolog/monolog": "^1.21",
+        "guzzlehttp/guzzle": "~6.0",
+        "afragen/wp-dependency-installer": "^1.1",
+        "phpunit/phpunit": "^5.7"
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "dev-master",
+        "phpmd/phpmd": "@stable"
+    },
+    "autoload": {
+        "psr-4": {
+            "Heidi\\Plugin\\": "plugin",
+            "Heidi\\Core\\": "core"
+        }
+    }
+}

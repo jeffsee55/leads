@@ -1,0 +1,208 @@
+[{
+    "type": "datepicker",
+    "input_name": "",
+    "label": "",
+    "properties": false,
+    "arguments": false,
+    "advanced_toggle": false,
+    "button": false,
+    "taxonomy": false,
+    "layouts": [{
+        "acf_fc_layout": "universal",
+        "xs": "12",
+        "sm": "12",
+        "md": "4",
+        "lg": "4"
+    }, {
+        "acf_fc_layout": "single",
+        "xs": "12",
+        "sm": "12",
+        "md": "12",
+        "lg": "12"
+    }]
+}, {
+    "type": "counter",
+    "input_name": "guests",
+    "label": "",
+    "properties": false,
+    "arguments": false,
+    "advanced_toggle": false,
+    "button": [{
+        "acf_fc_layout": "button",
+        "type": "submit",
+        "class": "btn btn-primary btn-block",
+        "value": "Search",
+        "id": "searchSubmit"
+    }],
+    "taxonomy": false,
+    "layouts": [{
+        "acf_fc_layout": "single",
+        "xs": "12",
+        "sm": "12",
+        "md": "12",
+        "lg": "12"
+    }]
+}, {
+    "type": "select",
+    "input_name": "min_bedrooms",
+    "label": "Baths",
+    "properties": false,
+    "arguments": [{
+        "value": "1",
+        "display_value": "1"
+    }, {
+        "value": "2",
+        "display_value": "2"
+    }, {
+        "value": "3",
+        "display_value": "3"
+    }, {
+        "value": "4",
+        "display_value": "4"
+    }, {
+        "value": "5",
+        "display_value": "5"
+    }],
+    "advanced_toggle": false,
+    "button": [{
+        "acf_fc_layout": "button",
+        "type": "submit",
+        "class": "btn btn-primary btn-block",
+        "value": "Search",
+        "id": "searchSubmit"
+    }],
+    "taxonomy": false,
+    "layouts": [{
+        "acf_fc_layout": "universal",
+        "xs": "6",
+        "sm": "4",
+        "md": "2",
+        "lg": "2"
+    }]
+}, {
+    "type": "select",
+    "input_name": "guests",
+    "label": "Guests",
+    "properties": false,
+    "arguments": [{
+        "value": "1",
+        "display_value": "1"
+    }, {
+        "value": "2",
+        "display_value": "2"
+    }, {
+        "value": "3",
+        "display_value": "3"
+    }, {
+        "value": "4",
+        "display_value": "4"
+    }, {
+        "value": "5",
+        "display_value": "5"
+    }, {
+        "value": "6",
+        "display_value": "6"
+    }, {
+        "value": "7",
+        "display_value": "7"
+    }, {
+        "value": "8",
+        "display_value": "8"
+    }],
+    "advanced_toggle": [{
+        "acf_fc_layout": "toggle",
+        "class": "form-control form-group",
+        "id": "advancedSearchButton",
+        "url": "#advancedSearch",
+        "text": "Advanced"
+    }],
+    "button": false,
+    "taxonomy": false,
+    "layouts": [{
+        "acf_fc_layout": "universal",
+        "xs": "6",
+        "sm": "4",
+        "md": "2",
+        "lg": "2"
+    }]
+}, {
+    "type": "advanced_toggle",
+    "input_name": "",
+    "label": "",
+    "properties": false,
+    "arguments": false,
+    "advanced_toggle": [{
+        "acf_fc_layout": "toggle",
+        "class": "form-control form-group",
+        "id": "advancedSearchButton",
+        "url": "#advancedSearch",
+        "text": "Advanced"
+    }],
+    "button": [{
+        "acf_fc_layout": "button",
+        "type": "submit",
+        "class": "btn btn-primary btn-block",
+        "value": "Search",
+        "id": "searchSubmit"
+    }],
+    "taxonomy": false,
+    "layouts": [{
+        "acf_fc_layout": "universal",
+        "xs": "12",
+        "sm": "4",
+        "md": "2",
+        "lg": "2"
+    }]
+}, {
+    "type": "button",
+    "input_name": "guests",
+    "label": "Guests",
+    "properties": false,
+    "arguments": [{
+        "value": "1",
+        "display_value": "1"
+    }, {
+        "value": "2",
+        "display_value": "2"
+    }, {
+        "value": "3",
+        "display_value": "3"
+    }, {
+        "value": "4",
+        "display_value": "4"
+    }, {
+        "value": "5",
+        "display_value": "5"
+    }, {
+        "value": "6",
+        "display_value": "6"
+    }, {
+        "value": "7",
+        "display_value": "7"
+    }, {
+        "value": "8",
+        "display_value": "8"
+    }],
+    "advanced_toggle": false,
+    "button": [{
+        "acf_fc_layout": "button",
+        "type": "submit",
+        "class": "btn btn-primary btn-block",
+        "value": "Search",
+        "id": "searchSubmit"
+    }],
+    "taxonomy": false,
+    "layouts": [{
+        "acf_fc_layout": "universal",
+        "xs": "12",
+        "sm": "12",
+        "md": "2",
+        "lg": "2"
+    }, {
+        "acf_fc_layout": "single",
+        "xs": "12",
+        "sm": "12",
+        "md": "12",
+        "lg": "12"
+    }]
+}]

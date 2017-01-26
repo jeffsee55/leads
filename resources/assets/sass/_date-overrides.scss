@@ -1,0 +1,92 @@
+
+.DateRangePicker,
+.DateRangePickerInput
+{
+    width: 100%;
+}
+
+.DateInput__display-text.DateInput__display-text--focused {
+    border-radius: 0;
+    color: white;
+}
+
+.DateRangePicker__picker {
+    z-index: 3;
+}
+
+.DateRangePickerInput {
+  background: none;
+}
+
+.DateInput {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 24px;
+    color: #757575;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    position: relative;
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    float: left;
+    width: 49%;
+    margin-left: 0;
+    margin-right: 0;
+
+    &:first-child {
+        margin-right: 2%;
+    }
+
+    .DateInput__display-text {
+        padding: 6px 12px 6px 30px;
+        height: 100%;
+        background-image: url("../img/calendar.svg");
+        background-size: 20px;
+        background-repeat: no-repeat;
+        background-position: 5px center;
+    }
+}
+
+.DateRangePickerInput__arrow {
+    display: none;
+}
+
+.DateRangePickerInput {
+    border: none;
+}
+
+.DateRangePicker__picker {
+    top: 45px;
+}
+
+.DateInput--with-caret::before {
+    top: 33px;
+}
+
+.DateInput--with-caret::after {
+    top: 34px;
+}
+
+@media(max-width: 720px) {
+    body.home #carousel-header:after {
+        top: 0;
+    }
+}

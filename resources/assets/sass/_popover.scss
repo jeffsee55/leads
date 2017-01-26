@@ -1,0 +1,60 @@
+#q4vr_popover {
+    .dropdown {
+        width: 100%;
+    }
+    .dropdown-toggle {
+        box-shadow: none;
+        border: 1px solid #cfcfcf;
+        width: 100%;
+        padding: 0 11px;
+        display: block;
+        text-transform: capitalize;
+        background: white;
+        text-align: left;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.428571429;
+        color: #555;
+    }
+    ul.dropdown-menu {
+        width: 200px;
+        padding: 0.5rem;
+        border-radius: 0;
+        border: none;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.07);
+        top: 75%;
+
+        & > div {
+            text-align: center;
+
+            .btn-group {
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+
+    .pets-button {
+        margin-top: 1rem;
+
+        &.hide-button {
+            display: none;
+        }
+
+        .pets-label {
+            width: 95px;
+        }
+
+        button.pets-toggle {
+            background: rgba(106, 210, 231, 0.35);
+            outline: none;
+            border-radius: 0px 3px 3px 0;
+
+            &.active,
+            &.focus {
+                background: #6ad2e7;
+                border: 1px solid #6ad2e7;
+                box-shadow: 0 4px rgba(106, 210, 231, 0.2);
+            }
+        }
+    }
+}
