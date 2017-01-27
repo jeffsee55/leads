@@ -4,6 +4,8 @@ namespace Heidi\Plugin\Controllers\Admin;
 
 use Heidi\Core\Controller;
 use Heidi\Core\Q4_List_Table;
+use Heidi\Core\Q4_Listings_Alert_List_Table;
+use Heidi\Core\Q4_Listings_List_Table;
 
 class LeadProfileController extends Controller
 {
@@ -39,18 +41,12 @@ class LeadProfileController extends Controller
     function getListingAlerts() {
         $query = new \WP_Query(
             [
-                'post_type' => 'listing_alert',
-                'meta_query' => [
-                    [
-                        'key' => 'lead',
-                        'value' => $_GET['user_id'],
-                        'compare' => '='
-                    ]
-                ]
+                'post_type' => 'listing_search',
+                'author' => $_GET['user_id'],
             ]
         );
         $actions = ['bulk-delete' => 'Delete'];
-        $table = $this->buildTable('listing_alert', $query->get_posts(), $actions);
+        $table = $this->buildAlertTable($query->get_posts(), $actions);
 
         wp_send_json_success($table);
     }
@@ -60,10 +56,12 @@ class LeadProfileController extends Controller
         $query = new \WP_Query(
             [
                 'post_type' => 'listing',
-                'post__in' => $listings
+                'post__in' => ! empty($listings) ? $listings : [0]
             ]
         );
-        $table = $this->buildTable('listing', $query->get_posts(), []);
+        $orderedListings = $this->orderByRecent($listings, $query->get_posts());
+
+        $table = $this->buildListingTable($orderedListings, []);
 
         wp_send_json_success($table);
     }
@@ -73,17 +71,32 @@ class LeadProfileController extends Controller
         $query = new \WP_Query(
             [
                 'post_type' => 'listing',
-                'post__in' => $listings
+                'post__in' => ! empty($listings) ? $listings : [0]
             ]
         );
-        $table = $this->buildTable('listing', $query->get_posts(), []);
+        $orderedListings = $this->orderByRecent($listings, $query->get_posts());
+
+        $table = $this->buildListingTable($orderedListings, []);
 
         wp_send_json_success($table);
     }
 
-    private function buildTable($post_type, $posts, $actions)
+    public function orderByRecent($listings, $queryListings)
     {
-        $wp_list_table = new Q4_List_Table($post_type);
+        foreach($listings as $listingID)
+        {
+            $items = array_filter($queryListings, function($queryListing) use ($listingID) {
+                return $queryListing->ID == $listingID;
+            });
+            $orderedListings[] = array_shift($items);
+        }
+
+        return array_reverse($orderedListings);
+    }
+
+    private function buildListingTable($posts, $actions)
+    {
+        $wp_list_table = new Q4_Listings_List_Table('listing');
 
         $wp_list_table->setBulkActions($actions);
 
@@ -94,15 +107,40 @@ class LeadProfileController extends Controller
         return ob_get_clean();
     }
 
-    public function addLeadFields()
+    private function buildAlertTable($posts, $actions)
     {
+        $wp_list_table = new Q4_Listings_Alert_List_Table('listing_search');
+
+        $wp_list_table->setBulkActions($actions);
+
+        $wp_list_table->prepare_items($posts);
+
+        ob_start();
+        $wp_list_table->display();
+        return ob_get_clean();
+    }
+
+    public function addLeadFields($user)
+    {
+        $user_id = $user ? $user->ID : null;
+        echo '<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Update User"><span class="acf-spinner"></span></p>';
         echo '<h1>';
-        echo 'Listing Alerts <a href="/wp-admin/post-new.php?post_type=listing_alert" class="page-title-action">Add New</a>';
+        echo 'Listing Searches <a href="/wp-admin/post-new.php?post_type=listing_search&user_id=' . $user_id . '" class="page-title-action">Add New</a>';
         echo '</h1>';
         echo '<div id="listingAlerts"></div>';
         echo '<h1>Favorites</h1>';
-        echo '<div id="favorites"></div>';
+        echo '<div id="favorites" style="position: relative"></div>';
         echo '<h1>Recently Viewed</h1>';
-        echo '<div id="recent"></div>';
+        echo '<div id="recent" style="position: relative"></div>';
+    }
+
+    private function count_user_posts_by_type( $userid, $post_type = 'post' ) {
+    	global $wpdb;
+
+    	$where = get_posts_by_author_sql( $post_type, true, $userid );
+
+    	$count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->posts $where" );
+
+      	return apply_filters( 'get_usernumposts', $count, $userid );
     }
 }

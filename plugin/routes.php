@@ -15,7 +15,16 @@ $router->group('Admin',
         ],
         'ListingSearchController' => [
             'init'  => 'registerListingAlerts',
+            'init'  => 'registerListingSearch',
+            'save_post' => 'saveLeadAsAuthor',
         ],
+        'UserTableController' => [
+            'admin_init' => 'addFilters',
+            'pre_user_query' => 'leadQuery',
+        ],
+        'OptionsPageController' => [
+            'wp_loaded' => 'addOptionsPages'
+        ]
     ]
 );
 

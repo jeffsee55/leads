@@ -13,7 +13,7 @@ class PostTypes
 	 * @param string $multiple Optional. Default multiple name.
 	 */
 	public static function addPostType( $name, $config, $singular = 'Entry', $multiple = 'Entries' ) {
-		$domain = Heidi_TEXT_DOMAIN;
+		$domain = HEIDI_TEXT_DOMAIN;
 
 		if ( ! isset( $config['labels'] ) ) {
 			$config['labels'] = array(

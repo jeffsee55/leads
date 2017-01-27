@@ -72,11 +72,12 @@ class Q4_List_Table extends \WP_List_Table
                 </div>
                 <?php
                 $this->extra_tablenav( $which );
-                $this->pagination( $which );
                 ?>
                 <br class="clear" />
             </div>
             <?php
+        else :
+            $this->extra_tablenav( $which );
         endif;
     }
 
