@@ -20,6 +20,7 @@ class TrackerController extends Controller
             $viewed_listings[] = $post->ID;
 
             update_user_meta($user_id, '_viewed_listings', $viewed_listings);
+            update_user_meta($user_id, '_last_visited', time());
         }
     }
 }
