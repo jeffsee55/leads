@@ -12,6 +12,14 @@ function dump()
 	array_map(function($x) { var_dump($x); }, func_get_args());
 }
 
+function ddd($data)
+{
+    echo '<pre>';
+    var_dump($data);
+    echo '</pre>';
+    die();
+}
+
 function displayDate($dateString, $withYear = false)
 {
     if($withYear)

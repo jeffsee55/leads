@@ -10,10 +10,8 @@ class Q4_Listings_List_Table extends Q4_List_Table
         $columns = [
             'title'    => __( 'Title', 'heidi' ),
             'thumb'    => __( 'Thumbnail', 'heidi' ),
-            'status'    => __( 'Status', 'heidi' ),
             'list_price'    => __( 'List Price', 'heidi' ),
             'type'    => __( 'Type', 'heidi' ),
-            'modified'    => __( 'Modified', 'heidi' ),
         ];
 
         return $columns;
@@ -26,10 +24,6 @@ class Q4_Listings_List_Table extends Q4_List_Table
             return '<img style="width: 100px" src=' . get_post_meta( $item->ID, '_listing_featured_image', true ) . '>';
         if( $column_name == 'list_price' )
             return get_post_meta( $item->ID, '_list_price', true );
-        if( $column_name == 'status' )
-            return get_post_meta( $item->ID, '_status', true );
-        if( $column_name == 'modified' )
-            return $item->post_modified_gmt;
         if ($column_name == 'type') {
           $class = get_post_meta( $item->ID, '_listing_class', true );
           echo ucwords(str_replace('_', ' ', $class ));

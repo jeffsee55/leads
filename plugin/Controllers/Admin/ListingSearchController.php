@@ -4,37 +4,16 @@ namespace Heidi\Plugin\Controllers\Admin;
 
 use Heidi\Core\PostTypes;
 use Heidi\Core\Controller;
+use Heidi\Plugin\Models\ListingSearchDisplayFilters;
+use Heidi\Core\Q4_Listings_List_Table;
 
 class ListingSearchController extends Controller
 {
     public function __construct()
     {
-        add_filter('acf/load_value/name=lead', [$this, 'addLeadToFields'], 10, 3);
-        add_filter('acf/load_value', [$this, 'convertSlugs'], 10, 3);
-        add_filter( 'manage_edit-listing_search_columns', [$this, 'manageColumns'] );
-        add_filter( 'manage_listing_search_posts_custom_column', [$this, 'manageCustomColumns'], 10, 3 );
-        add_filter( 'manage_edit-listing_search_sortable_columns', [$this, 'sortableColumns'] );
-    }
-
-    public function registerListingAlerts()
-    {
-        $config = [
-            'description' => 'Listing Alerts',
-            'public' => true,
-            'publicly_queryable' => true,
-            'show_ui' => true,
-            'show_in_nav_menus' => true,
-            'show_in_menu' => true,
-            'show_in_admin_bar' => true,
-            'menu_icon' => 'dashicons-search',
-            'has_archive' => true,
-            'capability_type' => 'post',
-            // 'capabilities' => [
-            //   'create_posts' => 'do_not_allow',
-            // ],
-            'map_meta_cap' => true,
-        ];
-        PostTypes::addPostType( 'listing_alert', $config, 'Listing Alert', 'Listing Alerts' );
+        $displayFilters= new ListingSearchDisplayFilters;
+        $displayFilters->addFilters();
+        add_action( 'acf/render_field/type=message', [$displayFilters, 'renderRecentEmails'], 10, 3 );
     }
 
     public function registerListingSearch()
@@ -44,84 +23,51 @@ class ListingSearchController extends Controller
             'public' => true,
             'publicly_queryable' => true,
             'show_ui' => true,
-            'show_in_nav_menus' => true,
-            'show_in_menu' => true,
+            'show_in_nav_menus' => false,
+            'show_in_menu' => false,
             'show_in_admin_bar' => true,
             'menu_icon' => 'dashicons-search',
             'has_archive' => true,
-            'capability_type' => 'post',
-            // 'capabilities' => [
-            //   'create_posts' => 'do_not_allow',
-            // ],
+            'capabilities' => array(
+                'edit_posts'             => 'manage_listing_searches',
+                'edit_others_posts'      => 'manage_listing_searches',
+                'publish_posts'          => 'manage_listing_searches',
+                'delete_published_posts' => 'manage_listing_searches',
+                'delete_others_posts'    => 'manage_listing_searches',
+                'edit_published_posts'   => 'manage_listing_searches'
+            ),
             'map_meta_cap' => true,
         ];
         PostTypes::addPostType( 'listing_search', $config, 'Listing Search', 'Listing Searches' );
     }
 
-    function addLeadToFields( $value, $post_id, $field )
+    function getEmailedListings() {
+        $listing_ids = isset($_GET['listing_ids']) ? $_GET['listing_ids'] : [];
+        $listing_ids = explode(',', $listing_ids);
+        $query = new \WP_Query(
+            [
+                'post_type' => 'listing',
+                'post__in' => $listing_ids
+            ]
+        );
+
+        $table = $this->buildListingTable($query->get_posts(), []);
+
+        wp_send_json_success($table);
+    }
+
+    private function buildListingTable($posts, $actions)
     {
-        if($value == null)
-        {
-            global $post;
-            $value = $post->post_author;
+        $wp_list_table = new Q4_Listings_List_Table('listing');
 
-            if(isset($_GET['user_id']))
-                $value = $_GET['user_id'];
-        }
-        return $value;
+        $wp_list_table->setBulkActions($actions);
+
+        $wp_list_table->prepare_items($posts);
+
+        ob_start();
+        $wp_list_table->display();
+        return ob_get_clean();
     }
 
-    function convertSlugs( $value, $post_id, $field )
-    {
-        // $slug = get_post_meta($post_id, $field, true);
-        // $term = get_term_by('slug', $slug, $field);
-        // if($term)
-        //     return $term->term_id;
-        //
-        // return $value;
-    }
-
-    public function saveLeadAsAuthor($post_id)
-    {
-        $lead = get_field('lead', $post_id);
-
-        remove_action('save_post', [$this, 'saveLeadAsAuthor']);
-
-        if ( !empty($lead ) ) {
-            $args = [
-                'ID'=>$post_id,
-                'post_author'=>$lead['ID']
-            ];
-
-            wp_update_post( $args );
-        }
-
-        add_action('save_post', [$this, 'saveLeadAsAuthor']);
-    }
-
-    function manageCustomColumns($column, $post_id)
-    {
-        global $post;
-        switch($column)
-        {
-            case 'alert_day' :
-                echo get_post_meta($post_id, 'alert_day', true);
-                break;
-            case 'lead' :
-                $lead = get_userdata($post->post_author);
-                echo $lead->user_login;
-                break;
-            default :
-                break;
-        }
-    }
-
-    function manageColumns($columns) {
-        $columns['alert_day'] = 'Alert Day';
-        $columns['lead'] = 'Lead';
-        unset($columns['date']);
-
-        return $columns;
-    }
 
 }

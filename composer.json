@@ -18,7 +18,8 @@
         "monolog/monolog": "^1.21",
         "guzzlehttp/guzzle": "~6.0",
         "afragen/wp-dependency-installer": "^1.1",
-        "phpunit/phpunit": "^5.7"
+        "phpunit/phpunit": "^5.7",
+        "google/recaptcha": "~1.1"
     },
     "require-dev": {
         "wp-coding-standards/wpcs": "dev-master",

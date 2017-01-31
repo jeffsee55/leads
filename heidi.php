@@ -38,51 +38,63 @@ add_action('plugins_loaded', function() {
 
 });
 
+add_action('init', function() {
+    global $wp_roles;
+
+    if ( ! isset( $wp_roles ) )
+        $wp_roles = new WP_Roles();
+});
+
 register_activation_hook(__FILE__, 'heidi_activate');
 
 function heidi_activate() {
-    add_role( 'super_agent', 'Super Agent',
-      array(
-        'delete_others_pages' => true,
-        'delete_others_posts' => true,
-        'delete_pages' => true,
-        'delete_posts' => true,
-        'delete_private_pages' => true,
-        'delete_private_posts' => true,
-        'delete_published_pages' => true,
-        'delete_published_posts' => true,
-        'edit_others_pages' => true,
-        'edit_others_posts' => true,
-        'edit_pages' => true,
-        'edit_posts' => true,
-        'edit_private_pages' => true,
-        'edit_private_posts' => true,
-        'edit_published_pages' => true,
-        'edit_published_posts' => true,
-        'manage_categories' => true,
-        'manage_links' => true,
-        'moderate_comments' => true,
-        'publish_pages' => true,
-        'read_private_pages' => true,
-        'read_private_posts' => true,
-        'delete_posts' => true,
-        'delete_published_posts' => true,
-        'edit_posts' => true,
-        'edit_published_posts' => true,
-        'publish_posts' => true,
-        'upload_files' => true,
-        'read' => true,
-        'create_users' => true,
-        'edit_users' => true,
-        'delete_users' => true,
-        'manage_listing_searches' => true,
-        'edit_listing_searches' => true,
-        'manage_listings' => true,
-        'edit_listings' => true,
-        'manage_messages' => true,
-      )
+    add_role( 'agent', 'Agent',
+        array(
+            'create_users' => true,
+            'delete_users' => true,
+            'edit_users' => true,
+            'list_users' => true,
+            'manage_listing_searches' => true,
+            'manage_listings' => true,
+            'read' => true,
+        )
     );
-    
+    add_role( 'super_agent', 'Super Agent',
+        array(
+            'create_users' => true,
+            'delete_users' => true,
+            'edit_users' => true,
+            'list_users' => true,
+            'manage_listing_searches' => true,
+            'manage_listings' => true,
+            'manage_messages' => true,
+            'create_posts' => true,
+            'delete_others_posts' => true,
+            'delete_posts' => true,
+            'delete_private_posts' => true,
+            'delete_published_posts' => true,
+            'edit_others_posts' => true,
+            'edit_posts' => true,
+            'edit_private_posts' => true,
+            'edit_published_posts' => true,
+            'manage_categories' => true,
+            'publish_posts' => true,
+            'read_private_posts' => true,
+            'create_pages' => true,
+            'delete_others_pages' => true,
+            'delete_pages' => true,
+            'delete_private_pages' => true,
+            'delete_published_pages' => true,
+            'edit_others_pages' => true,
+            'edit_pages' => true,
+            'edit_private_pages' => true,
+            'edit_published_pages' => true,
+            'publish_pages' => true,
+            'read_private_pages' => true,
+            'read' => true,
+        )
+    );
+
     add_role( 'lead', 'Lead', array( 'read' => true ) );
 
     remove_role( 'subscriber' );

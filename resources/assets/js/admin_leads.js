@@ -59,4 +59,34 @@ jQuery(document).ready(function ($) {
     {
         $('#recent').append(response.data);
     }
+
+    $(".viewEmailedListings").click(function(e) {
+        e.preventDefault();
+
+        var listing_ids = $(this).data('listings');
+
+        var listing_search_id = $("input[name='post_ID']").val();
+
+        getEmailedListings(listing_search_id, listing_ids);
+
+    })
+
+	function getEmailedListings(listing_search_id, listing_ids) {
+
+		$.ajax({
+			url: ajaxurl,
+            dataType: 'json',
+			data: {
+				action: 'get_emailed_listings',
+                listing_search_id: listing_search_id,
+                listing_ids: listing_ids
+			},
+			success: renderEmailed
+		});
+	}
+
+    function renderEmailed(response)
+    {
+        $('#emailedListings').html(response.data);
+    }
 });

@@ -4,6 +4,7 @@ namespace Heidi\Plugin\Controllers\Services;
 
 use Heidi\Core\Controller;
 use Heidi\Core\Q4_List_Table;
+use Heidi\Plugin\Models\MailNotifier;
 
 class MailerController extends Controller
 {
@@ -17,4 +18,10 @@ class MailerController extends Controller
         $phpmailer->From = "info@frazerfinerfoods.com";
         $phpmailer->FromName = "Contact";
     }
+
+    public static function sendContactMessage($fields)
+    {
+        (new MailNotifier)->sendContactMessage($fields);
+    }
+
 }
