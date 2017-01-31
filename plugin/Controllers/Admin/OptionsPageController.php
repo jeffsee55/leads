@@ -42,9 +42,8 @@ class OptionsPageController extends Controller
 
     public function renderConvertButton($field)
     {
-        $field['instructions'] = '<br><a href="/wp-admin/admin-post.php?action=convert_listing_searches" class="button">Convert</a>';
-        $field['instructions'] .= '<br><a href="/wp-admin/admin-post.php?action=clean_listing_searches" class="button">Clean</a>';
-        $field['instructions'] .= '<br><a href="/wp-admin/admin-post.php?action=add_terms_to_location" class="button">Add Terms</a>';
+        $field['instructions'] = '<br><a href="/wp-admin/admin-post.php?action=clean_listing_searches" class="button">Clean</a>';
+        $field['instructions'] .= '<hr><a href="/wp-admin/admin-post.php?action=convert_listing_searches" class="button">Convert</a>';
 
         return $field;
     }
@@ -59,10 +58,5 @@ class OptionsPageController extends Controller
     {
         $converter = new ListingSearchCleaner();
         $converter->clean();
-    }
-    public function addTermsToLocation()
-    {
-        $converter = new ListingSearchConverter();
-        $converter->addTermsToLocation();
     }
 }

@@ -7,11 +7,12 @@ class ListingSearchDisplayFilters
 
     public function addFilters()
     {
-        add_filter('acf/load_value/name=lead', [$this, 'addLeadToFields'], 10, 3);
         add_filter('acf/fields/taxonomy/query', [$this, 'addMinMaxTermFilterArgs'], 10, 3);
         add_filter('acf/load_value', [$this, 'filterMinMaxValue'], 10, 3);
-        add_filter('acf/load_field/type=message', [$this, 'displayEmailedListings'], 10, 3);
         add_filter('get_terms', [$this, 'filterMinMaxTerms'], 10, 3);
+
+        add_filter('acf/load_value/name=lead', [$this, 'addLeadToFields'], 10, 3);
+        add_filter('acf/load_field/type=message', [$this, 'displayEmailedListings'], 10, 3);
         add_filter( 'manage_edit-listing_search_columns', [$this, 'manageColumns'] );
         add_filter( 'manage_listing_search_posts_custom_column', [$this, 'manageCustomColumns'], 10, 3 );
     }
@@ -25,9 +26,12 @@ class ListingSearchDisplayFilters
             $field['instructions'] .= '<li><a class="viewEmailedListings" data-listings="91501,81682,102894,101955,98938,86976" href="javascript:void(0)">Mon, Jan 30th</a></li>';
             $field['instructions'] .= '<li><a class="viewEmailedListings" data-listings="98938,102047,86976,97150" href="javascript:void(0)">Mon, Jan 23rd</a></li>';
             $field['instructions'] .= '<li><a class="viewEmailedListings" data-listings="89381,102894,98938,89378" href="javascript:void(0)">Mon, Jan 17th</a></li>';
-            foreach(get_post_meta($post->ID, '_emails', true) as $email)
+            if($emails = get_post_meta($post->ID, '_emails', true))
             {
-                $field['instructions'] .= '<li><a id="viewEmailedListings" data-listings="102894,98938,86976" href="javascript:void(0)">Fri, Jan 23rd</a></li>';
+                foreach($emails as $email)
+                {
+                    $field['instructions'] .= '<li><a id="viewEmailedListings" data-listings="102894,98938,86976" href="javascript:void(0)">Fri, Jan 23rd</a></li>';
+                }
             }
             $field['instructions'] .= '</ul>';
         }
@@ -52,7 +56,7 @@ class ListingSearchDisplayFilters
                 echo '<p>Use this area to see how many listings the search will return</p>';
                 echo '<strong id="test_search_result">Ready...</strong>';
                 echo '<div style="margin-top: 1rem;">';
-                echo '<a class="button button-primary">Run Search</a>';
+                echo '<a id="runTestSearch" class="button button-primary">Run Search</a>';
                 echo '</div>';
                 break;
             default;
@@ -65,8 +69,10 @@ class ListingSearchDisplayFilters
         $subString = substr($field['name'], 0, 3);
 
         if($subString == 'min') :
+            remove_filter('get_term', [$this, 'filterMaxTerm']);
             add_filter('get_term', [$this, 'filterMinTerm']);
         elseif ($subString == 'max') :
+            remove_filter('get_term', [$this, 'filterMinTerm']);
             add_filter('get_term', [$this, 'filterMaxTerm']);
         endif;
 
@@ -75,16 +81,18 @@ class ListingSearchDisplayFilters
 
     function filterMinTerm($term)
     {
-        $term->name = array_shift(explode(' to ', $term->name));
-        remove_filter('get_term', [$this, 'filterMinTerm']);
+        $name = $term->name;
+        $names = explode(' to ', $name);
+        $term->name = array_shift($names);
 
         return $term;
     }
 
     function filterMaxTerm($term)
     {
-        $term->name = array_pop(explode(' to ', $term->name));
-        remove_filter('get_term', [$this, 'filterMaxTerm']);
+        $name = $term->name;
+        $names = explode(' to ', $name);
+        $term->name = array_pop($names);
 
         return $term;
     }
@@ -102,9 +110,10 @@ class ListingSearchDisplayFilters
             $args['orderby'] = 'meta_value_num';
             $args['meta_key'] = 'range_order';
 
-            if($field['name'] == 'min_year' || $field['name'] == 'max_year')
-                $args['order'] = 'desc';
         }
+
+        // if($field['name'] == 'min_year' || $field['name'] == 'max_year')
+        //     $args['order'] = 'desc';
 
         return $args;
 
@@ -112,6 +121,9 @@ class ListingSearchDisplayFilters
 
     function filterMinMaxTerms($terms, $taxonomy, $args)
     {
+        if(! isset($args['side']))
+            return $terms;
+
         if($args['side'] == 'left' || $args['side'] == 'right')
         {
             foreach($terms as $term)

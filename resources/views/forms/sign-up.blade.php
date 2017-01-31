@@ -21,6 +21,9 @@
                 ?>
                 <div style="margin: 0 0.5rem 1rem" id="navRecaptcha"></div>
                 <input type="submit" value="Sign Up">
+                <div>
+                    <small style="font-size: 12px; line-height: 1">{{ the_field('q4_sign_up_subtext', 'option') }}</small>
+                </div>
             </form>
         </div>
     </div>

@@ -16,6 +16,11 @@ class ListingSearchController extends Controller
         add_action( 'acf/render_field/type=message', [$displayFilters, 'renderRecentEmails'], 10, 3 );
     }
 
+    public function runTestSearch()
+    {
+        wp_send_json_success('4 results');
+    }
+
     public function registerListingSearch()
     {
         $config = [

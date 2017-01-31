@@ -7,7 +7,7 @@ class ListingSearchConverter
 
     public function convert()
     {
-        ini_set('memory_limit','256M');
+        ini_set('memory_limit','512M');
 
         global $wpdb;
         $taxonomies = array_keys(get_object_taxonomies('listing', 'objects'));
@@ -189,40 +189,4 @@ class ListingSearchConverter
         endforeach;
     }
 
-    function addTermsToLocation()
-    {
-        // ini_set('memory_limit','256M');
-        //
-        // global $wpdb;
-        // $query = $wpdb->get_results( "SELECT $wpdb->terms.name FROM $wpdb->terms INNER JOIN $wpdb->term_taxonomy ON $wpdb->terms.term_id = $wpdb->term_taxonomy.term_id WHERE $wpdb->term_taxonomy.taxonomy IN ('schools', 'area', 'subdivision', 'city', 'address', 'county', 'street')", ARRAY_N );
-        // foreach($query as $termName)
-        // {
-        //     wp_insert_term($termName[0], 'location');
-        // }
-        //
-        // wp_redirect(get_site_url() . '/wp-admin/admin.php?page=acf-options-leads');
-        // die();
-        // UPDATE wp_term_taxonomy
-        // SET wp_term_taxonomy.taxonomy = 'location'
-        // WHERE wp_term_taxonomy.taxonomy IN ('schools', 'area', 'subdivision', 'city', 'address', 'county', 'street')
-    }
-    function slugify($string, $replace = array(), $delimiter = '-') {
-        if (!extension_loaded('iconv')) {
-            throw new Exception('iconv module not loaded');
-        }
-        // Save the old locale and set the new locale to UTF-8
-        $oldLocale = setlocale(LC_ALL, '0');
-        setlocale(LC_ALL, 'en_US.UTF-8');
-        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
-        if (!empty($replace)) {
-            $clean = str_replace((array) $replace, ' ', $clean);
-        }
-        $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
-        $clean = strtolower($clean);
-        $clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
-        $clean = trim($clean, $delimiter);
-        // Revert back to the old locale
-        setlocale(LC_ALL, $oldLocale);
-        return $clean;
-    }
 }

@@ -8,7 +8,7 @@ $router->group('Admin',
             'admin_enqueue_scripts' => 'enqueueLeadScripts',
             'show_user_profile' => 'addLeadFields',
             'edit_user_profile' => 'addLeadFields',
-            // 'acf/render_field/type=message' => 'loadListingAlerts',
+            'acf/render_field/type=message' => 'loadListingAlerts',
             'wp_ajax_get_listing_alerts' => 'getListingAlerts',
             'wp_ajax_get_favorites' => 'getFavorites',
             'wp_ajax_get_recent' => 'getRecent'
@@ -17,7 +17,8 @@ $router->group('Admin',
             'init'  => 'registerListingSearch',
             // 'admin_init' => 'setCurrentUser',
             'save_post' => 'saveLeadAsAuthor',
-            'wp_ajax_get_emailed_listings' => 'getEmailedListings'
+            'wp_ajax_get_emailed_listings' => 'getEmailedListings',
+            'wp_ajax_run_test_search' => 'runTestSearch'
         ],
         'MessagesController' => [
             'init'  => 'registerMessages',
@@ -36,7 +37,6 @@ $router->group('Admin',
             'wp_loaded' => 'addOptionsPages',
             'admin_post_convert_listing_searches' => 'convertListingSearches',
             'admin_post_clean_listing_searches' => 'cleanListingSearches',
-            'admin_post_add_terms_to_location' => 'addTermsToLocation'
         ]
     ]
 );

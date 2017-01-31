@@ -105,4 +105,33 @@ jQuery(document).ready(function ($) {
     }
     $('#wordpress-seo').hide();
     $('#wordpress-seo').next('table').hide();
+
+    $('#runTestSearch').click(function(e) {
+
+        e.preventDefault();
+
+        $(this).addClass('disabled');
+
+        var listing_search_id = $(this).data('listing-search-id');
+		$.ajax({
+			url: ajaxurl,
+            dataType: 'json',
+			data: {
+				action: 'run_test_search',
+                listing_search_id: listing_search_id
+			},
+			success: renderResult
+		});
+
+        $(this).removeClass('disabled');
+
+    })
+
+    function renderResult(response)
+    {
+        console.log(response);
+        $('#test_search_result').html(response.data);
+    }
+
+
 });
