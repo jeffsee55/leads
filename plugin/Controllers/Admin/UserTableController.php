@@ -49,62 +49,64 @@ class UserTableController extends Controller
     public function leadQuery($user_query)
     {
         global $wpdb;
+        if(get_current_screen()->base == 'users') :
 
-        $user_query->query_from = "FROM wp_users";
+            $user_query->query_from = "FROM wp_users";
 
-        if($this->currentRole == 'agent')
-        {
-            $agent_id = $this->currentUser->ID;
-            $user_query->query_from .= " INNER JOIN wp_usermeta AS wpm ON wp_users.ID = wpm.user_id
-            AND (( wpm.meta_key = '_agent_id' AND wpm.meta_value = $agent_id ))";
-        } elseif($this->currentRole == 'super_agent' && (isset($_GET['role']) && $_GET['role'] == 'lead')) {
-            $agent_id = $this->currentUser->ID;
-            $user_query->query_from .= " INNER JOIN wp_usermeta AS wpm ON wp_users.ID = wpm.user_id
-            AND (( wpm.meta_key = '_agent_id' AND wpm.meta_value = $agent_id ))";
-        } else {
-            // $user_query->query_from .= " INNER JOIN wp_usermeta AS wpm ON wp_users.ID = wpm.user_id";
-        }
+            if($this->currentRole == 'agent')
+            {
+                $agent_id = $this->currentUser->ID;
+                $user_query->query_from .= " INNER JOIN wp_usermeta AS wpm ON wp_users.ID = wpm.user_id
+                AND (( wpm.meta_key = '_agent_id' AND wpm.meta_value = $agent_id ))";
+            } elseif($this->currentRole == 'super_agent' && (isset($_GET['role']) && $_GET['role'] == 'lead')) {
+                $agent_id = $this->currentUser->ID;
+                $user_query->query_from .= " INNER JOIN wp_usermeta AS wpm ON wp_users.ID = wpm.user_id
+                AND (( wpm.meta_key = '_agent_id' AND wpm.meta_value = $agent_id ))";
+            } else {
+                // $user_query->query_from .= " INNER JOIN wp_usermeta AS wpm ON wp_users.ID = wpm.user_id";
+            }
 
-        if(isset($_GET['orderby']) && $_GET['orderby'] == 'listing_search')
-        {
-            $order = isset($_GET['order']) ? $_GET['order'] : 'desc';
+            if(isset($_GET['orderby']) && $_GET['orderby'] == 'listing_search')
+            {
+                $order = isset($_GET['order']) ? $_GET['order'] : 'desc';
 
-            $user_query->query_from .= "
-            LEFT OUTER JOIN wp_posts
-            ON (( wp_users.id = wp_posts.post_author AND wp_posts.post_type = 'listing_search'))";
+                $user_query->query_from .= "
+                LEFT OUTER JOIN wp_posts
+                ON (( wp_users.id = wp_posts.post_author AND wp_posts.post_type = 'listing_search'))";
 
-            $user_query->query_orderby = " GROUP BY wp_posts.post_author, wp_users.user_login ORDER BY Count(wp_posts.post_author) " . $order . ", wp_users.user_login ASC";
+                $user_query->query_orderby = " GROUP BY wp_posts.post_author, wp_users.user_login ORDER BY Count(wp_posts.post_author) " . $order . ", wp_users.user_login ASC";
 
-        } elseif(isset($_GET['orderby']) && $_GET['orderby'] == 'simplefavorites') {
-            $order = isset($_GET['order']) ? $_GET['order'] : 'desc';
+            } elseif(isset($_GET['orderby']) && $_GET['orderby'] == 'simplefavorites') {
+                $order = isset($_GET['order']) ? $_GET['order'] : 'desc';
 
-            $user_query->query_from .= "
-            LEFT OUTER JOIN wp_usermeta
-            ON wp_users.ID = wp_usermeta.user_id AND wp_usermeta.meta_key = 'simplefavorites'";
+                $user_query->query_from .= "
+                LEFT OUTER JOIN wp_usermeta
+                ON wp_users.ID = wp_usermeta.user_id AND wp_usermeta.meta_key = 'simplefavorites'";
 
-            $user_query->query_orderby = "ORDER BY CAST(substring_index(substring_index(wp_usermeta.meta_value, ':{', 3), ':', -1) AS INT) " . $order . ", wp_users.user_login ASC";
-        } elseif(isset($_GET['orderby']) && $_GET['orderby'] == '_last_visited') {
-            $order = isset($_GET['order']) ? $_GET['order'] : 'desc';
+                $user_query->query_orderby = "ORDER BY CAST(substring_index(substring_index(wp_usermeta.meta_value, ':{', 3), ':', -1) AS INT) " . $order . ", wp_users.user_login ASC";
+            } elseif(isset($_GET['orderby']) && $_GET['orderby'] == '_last_visited') {
+                $order = isset($_GET['order']) ? $_GET['order'] : 'desc';
 
-            $user_query->query_from .= "
-            LEFT OUTER JOIN wp_usermeta
-            ON wp_users.ID = wp_usermeta.user_id AND wp_usermeta.meta_key = '_last_visited'";
+                $user_query->query_from .= "
+                LEFT OUTER JOIN wp_usermeta
+                ON wp_users.ID = wp_usermeta.user_id AND wp_usermeta.meta_key = '_last_visited'";
 
-            $user_query->query_orderby = "ORDER BY wp_usermeta.meta_value $order, wp_users.user_login ASC";
-        }
+                $user_query->query_orderby = "ORDER BY wp_usermeta.meta_value $order, wp_users.user_login ASC";
+            }
 
-        $user_query->query_where = "WHERE 1=1";
-        if(isset($_GET['role']) && !empty($_GET['role']))
-        {
-            $role = $_GET['role'];
-            $user_query->query_from .= " INNER JOIN wp_usermeta AS meta ON wp_users.ID = meta.user_id AND ( meta.meta_key = 'wp_capabilities' AND meta.meta_value LIKE '%{$role}%' )";
-        }
+            $user_query->query_where = "WHERE 1=1";
+            if(isset($_GET['role']) && !empty($_GET['role']))
+            {
+                $role = $_GET['role'];
+                $user_query->query_from .= " INNER JOIN wp_usermeta AS meta ON wp_users.ID = meta.user_id AND ( meta.meta_key = 'wp_capabilities' AND meta.meta_value LIKE '%{$role}%' )";
+            }
 
-        if(isset($user_query->query_vars['search']) && !empty($user_query->query_vars['search']))
-        {
-            $s = trim($user_query->query_vars['search'], '*');
-            $user_query->query_where .= " AND (user_login LIKE '%$s%' OR user_url LIKE '%$s%' OR user_email LIKE '%$s%' OR user_nicename LIKE '%$s%' OR display_name LIKE '%$s%')";
-        }
+            if(isset($user_query->query_vars['search']) && !empty($user_query->query_vars['search']))
+            {
+                $s = trim($user_query->query_vars['search'], '*');
+                $user_query->query_where .= " AND (user_login LIKE '%$s%' OR user_url LIKE '%$s%' OR user_email LIKE '%$s%' OR user_nicename LIKE '%$s%' OR display_name LIKE '%$s%')";
+            }
+        endif;
     }
 
     function manage_users_sortable_columns($columns) {
@@ -185,7 +187,7 @@ class UserTableController extends Controller
             if($listing_ids)
             {
                 $listing_ids = $listing_ids[0]['posts'];
-                return '<strong><a href="' . admin_url("edit.php?post_type=listing&filter=favorites_by_ids&listing_ids=") . implode(',', $listing_ids) . '">' . count($listing_ids) . ' Favorited</strong></a><br>' . get_user_favorites_count($user_id) . ' Active';
+                return '<strong>' . count($listing_ids) . ' Favorited</strong><br>' . get_user_favorites_count($user_id) . ' Active';
             }
             return 'No favorites';
         } elseif ($column_name == 'most_recent') {
@@ -205,7 +207,7 @@ class UserTableController extends Controller
         // {
             $columns['favorited'] = 'Favorited';
             $columns['listing_search'] = 'Listing Searches';
-            $columns['most_recent'] = 'Most Recent';
+            $columns['most_recent'] = 'Last Visited';
             unset($columns['posts']);
             unset($columns['role']);
             unset($columns['email']);

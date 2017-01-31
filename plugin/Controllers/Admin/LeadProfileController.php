@@ -91,7 +91,7 @@ class LeadProfileController extends Controller
             $orderedListings[] = array_shift($items);
         }
 
-        return array_reverse($orderedListings);
+        return array_reverse(array_filter($orderedListings));
     }
 
     private function buildListingTable($posts, $actions)
