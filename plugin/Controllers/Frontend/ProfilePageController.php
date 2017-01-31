@@ -37,11 +37,46 @@ class ProfilePageController extends Controller
 
 			endwhile;
 
+            if( function_exists( 'get_user_favorites' ) ) :
+                $listings = get_user_favorites();
+            endif;
+
+
+            if( !empty($listings) ) :
+                $args = array(
+                    'post__in' => $listings,
+                    'post_type' => 'listing'
+                );
+                $listings = new \WP_Query($args);
+                $listings_count = count( $listings->posts );
+
+                if( $listings_count == 0 ) :
+                    echo '<h4>You have no Favorite Properties</h4>';
+                    echo '<a class="button" href="/listings">Search Here</a>';
+                    elseif( $listings_count == 1 ) :
+                        echo '<h4>You have 1 Favorite Property</h4>';
+                        else :
+                            printf( '<h4>You have %s Favorite Properties</h4>', $listings_count );
+                        endif;
+
+
+                        echo '<div class="row">';
+
+                        while ( $listings->have_posts() ) : $listings->the_post();
+                        get_template_part( 'listing/listing-card' );
+                    endwhile;
+
+                    echo '</div>';
+                    else :
+                        echo '<h4>You have no favorite listings</h4>';
+                    endif;
+
 
             $user_id = get_current_user_id();
             $listingSearchQuery = new \WP_Query(['post_type' => 'listing_search', 'author' => $user_id]);
             $listingSearches = $listingSearchQuery->get_posts();
             ?>
+            <h2>Saved Searches</h2>
             <style>
                 .acf-form-submit {
                     padding: 1rem;
@@ -65,7 +100,7 @@ class ProfilePageController extends Controller
                 $new_post = array(
                     'post_id'            => $listingSearch->ID, // Create a new post
                     // PUT IN YOUR OWN FIELD GROUP ID(s)
-                    'field_groups'       => array(103612), // Create post field group ID(s)
+                    'field_groups'       => array(103773), // Create post field group ID(s)
                     'form'               => true,
                     'return'             => '', // Redirect to new post url
                     'html_before_fields' => '',

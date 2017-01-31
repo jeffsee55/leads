@@ -49,7 +49,7 @@ class UserTableController extends Controller
     public function leadQuery($user_query)
     {
         global $wpdb;
-        if(get_current_screen()->base == 'users') :
+        if(is_admin() && get_current_screen()->base == 'users') :
 
             $user_query->query_from = "FROM wp_users";
 

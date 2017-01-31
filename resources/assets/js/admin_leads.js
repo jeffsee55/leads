@@ -89,4 +89,20 @@ jQuery(document).ready(function ($) {
     {
         $('#emailedListings').html(response.data);
     }
+
+    var hideRows = [
+        'user-rich-editing-wrap',
+        'user-comment-shortcuts-wrap',
+        'show-admin-bar user-admin-bar-front-wrap',
+        'user-url-wrap',
+        'user-description-wrap',
+        'user-profile-picture'
+    ];
+    for(row of hideRows)
+    {
+        console.log(row);
+        $('.' + row).hide();
+    }
+    $('#wordpress-seo').hide();
+    $('#wordpress-seo').next('table').hide();
 });

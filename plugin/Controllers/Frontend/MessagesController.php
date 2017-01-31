@@ -60,7 +60,7 @@ class MessagesController extends Controller
                         'post_status' => 'publish',
                         'post_title' => 'Potential Buyer - ' . $post->post_title
                     ),
-                    'field_groups'       => array(103712), // Create post field group ID(s)
+                    'field_groups'       => array(103798), // Create post field group ID(s)
                     'form'               => true, // False if embedding in another form
                     'return'             => '', // Redirect to new post url
                     'html_before_fields' => '',
@@ -104,7 +104,7 @@ class MessagesController extends Controller
                         'post_status' => 'publish',
                         'post_title' => 'New Message',
                     ),
-                    'field_groups'       => array(103712), // Create post field group ID(s)
+                    'field_groups'       => array(103798), // Create post field group ID(s)
                     'form'               => true, // False if embedding in another form
                     'return'             => '', // Redirect to new post url
                     'html_before_fields' => '',
