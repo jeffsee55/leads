@@ -11,7 +11,7 @@ class LeadProfileController extends Controller
 {
     public function addFilters()
     {
-        add_filter( 'user_contactmethods', 'removeContactMethods', 10, 1);
+        add_filter( 'user_contactmethods', [$this, 'removeContactMethods'], 10, 1);
         remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' );
     }
 
@@ -32,10 +32,7 @@ class LeadProfileController extends Controller
     }
 
     public function removeContactMethods($contactmethods) {
-        unset($contactmethods['aim']);
-        unset($contactmethods['jabber']);
-        unset($contactmethods['website']);
-        return $contactmethods;
+        return [];
     }
 
     function getListingAlerts() {
@@ -122,16 +119,7 @@ class LeadProfileController extends Controller
 
     public function addLeadFields($user)
     {
-        $user_id = $user ? $user->ID : null;
-        echo '<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Update User"><span class="acf-spinner"></span></p>';
-        echo '<h1>';
-        echo 'Listing Searches <a href="/wp-admin/post-new.php?post_type=listing_search&user_id=' . $user_id . '" class="page-title-action">Add New</a>';
-        echo '</h1>';
-        echo '<div id="listingAlerts"></div>';
-        echo '<h1>Favorites</h1>';
-        echo '<div id="favorites" style="position: relative"></div>';
-        echo '<h1>Recently Viewed</h1>';
-        echo '<div id="recent" style="position: relative"></div>';
+        return view('admin.lead', compact('user'));
     }
 
     private function count_user_posts_by_type( $userid, $post_type = 'post' ) {

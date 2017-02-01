@@ -2,6 +2,8 @@ jQuery(document).ready(function ($) {
     var user_id = $("input[name='user_id']").val();
     getListingAlerts(user_id);
 
+
+
 	function getListingAlerts(user_id) {
 
 		$.ajax({
